@@ -1,3 +1,7 @@
+use complex::complex::ComplexNumber;
+
 fn main() {
-  println!("this is complex which is quite easy!");
+  let z = ComplexNumber::new(2.0, 1.0);
+
+  println!("z is {:#?}", z);
 }
