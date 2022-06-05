@@ -1,6 +1,5 @@
-// use complex::complex::ComplexNumber;
-use complex::complex::exponentiation::e_raised_to;
+// use complex::complex::exponentiation::e_raised_to;
 
 fn main() {
-  println!("{}", e_raised_to(1.0));
+  println!("{}", 10.0_f64.exp());
 }
