@@ -1,5 +1,7 @@
-// use complex::complex::exponentiation::e_raised_to;
+use complex::complex::cartesian::CartesianFormat;
 
 fn main() {
-  println!("{}", 10.0_f64.exp());
+  let num = CartesianFormat::new(0.0, 1.0);
+
+  println!("{}", num.argument());
 }

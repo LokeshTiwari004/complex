@@ -1,5 +1,5 @@
-mod cartesian;
-mod polar;
+pub mod cartesian;
+pub mod polar;
 
 
 #[derive(Debug, Clone, Copy)]

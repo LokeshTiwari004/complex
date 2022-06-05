@@ -1,3 +1,5 @@
+use std::f64::consts::PI;
+
 #[derive(Debug, Clone, Copy)]
 pub struct CartesianFormat {
     real: f64,
@@ -51,6 +53,27 @@ impl CartesianFormat {
         self.imag = imag;
     }
 }
+impl CartesianFormat {
+    // This Method returns modulus of a Complex Number in Cartesian Format
+    pub fn modulus(&self) -> f64 {
+        (self.real.powi(2) + self.imag.powi(2)).sqrt()
+    }
+    
+    // This Method returns argument of a Complex Number in Cartesian Format
+    pub fn argument(&self) -> f64 {
+        let principle_solution =  (self.imag / self.real).atan();
+        if self.real.signum() == 1.0 {
+            return principle_solution;
+        } else {
+            if principle_solution.signum() == 1.0 {
+                return principle_solution - PI;
+            } else {
+                return principle_solution + PI;
+            }
+        }
+    }
+}
+
 
 // Associated Functions for { creating Instances, defining Complex Number Operations}
 impl CartesianFormat {
