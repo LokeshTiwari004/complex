@@ -91,7 +91,7 @@ impl PolarFormat {
 
     pub fn exponentiation(&mut self, index: &PolarFormat) {
         let answer = PolarFormat::new(
-            index.real() * self.modulus.log(E) - self.argument * index.imag(),
+            (index.real() * self.modulus.log(E) - self.argument * index.imag()).exp(),
             self.argument * index.real() + index.imag() * self.modulus.log(E),
         );
 
@@ -143,7 +143,7 @@ impl PolarFormat {
 
     pub fn exponentiation_of(base: &PolarFormat, power: &PolarFormat) -> PolarFormat {
         PolarFormat::new(
-            power.real() * base.modulus.log(E) - base.argument * power.imag(),
+            (power.real() * base.modulus.log(E) - base.argument * power.imag()).exp(),
             base.argument * power.real() + power.imag() * base.modulus.log(E),
         )
     }
