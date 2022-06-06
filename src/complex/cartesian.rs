@@ -1,4 +1,7 @@
 use std::f64::consts::PI;
+use std::f64::consts::E;
+
+use super::polar::PolarFormat;
 
 #[derive(Debug, Clone, Copy)]
 pub struct CartesianFormat {
@@ -52,6 +55,17 @@ impl CartesianFormat {
         self.real = real;
         self.imag = imag;
     }
+
+    pub fn exponentiation(&mut self, index: &CartesianFormat) {
+        let answer = PolarFormat::new(
+            index.real * self.modulus().log(E) - self.argument() * index.imag,
+            self.argument() * index.real + index.imag * self.modulus().log(E),
+        );
+
+        self.real = answer.real();
+        self.imag = answer.imag();
+    }
+
 }
 impl CartesianFormat {
     // This Method returns modulus of a Complex Number in Cartesian Format
@@ -71,6 +85,10 @@ impl CartesianFormat {
                 return principle_solution + PI;
             }
         }
+    }
+
+    pub fn transform(&self) -> PolarFormat {
+        PolarFormat::new(self.modulus(), self.argument())
     }
 }
 
@@ -104,5 +122,12 @@ impl CartesianFormat {
             real: (num1.real * num2.real - num1.imag * num2.imag),
             imag: (num1.real * num2.imag + num1.imag * num2.real),
         }
+    }
+
+    pub fn exponentiation_of(base: &CartesianFormat, power: &CartesianFormat) -> CartesianFormat {
+        PolarFormat::new(
+            power.real * base.modulus().log(E) - base.argument() * power.imag,
+            base.argument() * power.real + power.imag * base.modulus().log(E),
+        ).transform()
     }
 }

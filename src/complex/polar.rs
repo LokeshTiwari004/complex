@@ -1,4 +1,5 @@
 use super::cartesian::CartesianFormat;
+use std::f64::consts::E;
 use std::f64::consts::PI;
 
 #[derive(Debug, Clone, Copy)]
@@ -46,16 +47,19 @@ impl PolarFormat {
     }
 }
 
-
 impl PolarFormat {
     pub fn add(&mut self, add_with: &PolarFormat) {
-        let answer = CartesianFormat::new(self.real() + add_with.real(), self.imag() + add_with.imag());
+        let answer =
+            CartesianFormat::new(self.real() + add_with.real(), self.imag() + add_with.imag());
         self.modulus = answer.modulus();
         self.argument = answer.argument();
     }
 
     pub fn reduce(&mut self, reduce_by: &PolarFormat) {
-        let answer = CartesianFormat::new(self.real() - reduce_by.real(), self.imag() - reduce_by.imag());
+        let answer = CartesianFormat::new(
+            self.real() - reduce_by.real(),
+            self.imag() - reduce_by.imag(),
+        );
         self.modulus = answer.modulus();
         self.argument = answer.argument();
     }
@@ -72,7 +76,6 @@ impl PolarFormat {
     }
 }
 
-
 impl PolarFormat {
     pub fn real(&self) -> f64 {
         self.modulus * self.argument.cos()
@@ -80,6 +83,20 @@ impl PolarFormat {
 
     pub fn imag(&self) -> f64 {
         self.modulus * self.argument.sin()
+    }
+
+    pub fn transform(&self) -> CartesianFormat {
+        CartesianFormat::new(self.real(), self.imag())
+    }
+
+    pub fn exponentiation(&mut self, index: &PolarFormat) {
+        let answer = PolarFormat::new(
+            index.real() * self.modulus.log(E) - self.argument * index.imag(),
+            self.argument * index.real() + index.imag() * self.modulus.log(E),
+        );
+
+        self.modulus = answer.modulus;
+        self.argument = answer.argument;
     }
 }
 
@@ -122,5 +139,12 @@ impl PolarFormat {
 
     pub fn multiplication_of(num1: &PolarFormat, num2: &PolarFormat) -> PolarFormat {
         PolarFormat::new(num1.modulus * num2.modulus, num1.argument + num2.argument)
+    }
+
+    pub fn exponentiation_of(base: &PolarFormat, power: &PolarFormat) -> PolarFormat {
+        PolarFormat::new(
+            power.real() * base.modulus.log(E) - base.argument * power.imag(),
+            base.argument * power.real() + power.imag() * base.modulus.log(E),
+        )
     }
 }
