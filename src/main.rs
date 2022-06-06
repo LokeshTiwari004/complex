@@ -1,7 +1,7 @@
-use complex::complex::cartesian::CartesianFormat;
+use complex::complex::ComplexNumber;
 
 fn main() {
-  let num = CartesianFormat::new(0.0, 1.0);
+  let num = ComplexNumber::cartesian(0.0, 1.0);
 
-  println!("{}", num.argument());
+  println!("{:#?}", ComplexNumber::exponentiation_of(&num, &num, true));
 }
