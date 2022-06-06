@@ -58,7 +58,7 @@ impl CartesianFormat {
 
     pub fn exponentiation(&mut self, index: &CartesianFormat) {
         let answer = PolarFormat::new(
-            index.real * self.modulus().log(E) - self.argument() * index.imag,
+            (index.real * self.modulus().log(E) - self.argument() * index.imag).exp(),
             self.argument() * index.real + index.imag * self.modulus().log(E),
         );
 
@@ -126,7 +126,7 @@ impl CartesianFormat {
 
     pub fn exponentiation_of(base: &CartesianFormat, power: &CartesianFormat) -> CartesianFormat {
         PolarFormat::new(
-            power.real * base.modulus().log(E) - base.argument() * power.imag,
+            (power.real * base.modulus().log(E) - base.argument() * power.imag).exp(),
             base.argument() * power.real + power.imag * base.modulus().log(E),
         ).transform()
     }

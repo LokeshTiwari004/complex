@@ -84,6 +84,23 @@ impl ComplexNumber {
         };
     }
 
+    pub fn exponentiation(&mut self, index: &ComplexNumber) {
+        match self {
+            ComplexNumber::CF(base) => {
+                match index {
+                    ComplexNumber::CF(index) => base.exponentiation(index),
+                    ComplexNumber::PF(index) => base.exponentiation(&index.transform()),
+                }
+            },
+            ComplexNumber::PF(base) => {
+                match index {
+                    ComplexNumber::CF(index) => base.exponentiation(&index.transform()),
+                    ComplexNumber::PF(index) => base.exponentiation(index)
+                }
+            }
+        };
+    }
+
     pub fn addition_of(number1: &ComplexNumber, number2: &ComplexNumber, in_cf: bool) -> ComplexNumber {
         match number1 {
             ComplexNumber::CF(num1) => {
@@ -197,7 +214,7 @@ impl ComplexNumber {
         }
     }    
 
-    pub fn exponentiation(base: &ComplexNumber, power: &ComplexNumber, in_cf: bool) -> ComplexNumber {
+    pub fn exponentiation_of(base: &ComplexNumber, power: &ComplexNumber, in_cf: bool) -> ComplexNumber {
         match base {
             ComplexNumber::CF(base) => {
                 match power {
