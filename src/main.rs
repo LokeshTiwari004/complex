@@ -11,11 +11,11 @@ fn main() {
   let duration1 = start1.elapsed();
 
   let start3 = Instant::now();
-  let i_i3 = num1.exponentiation(&num2);
+  num1.exponentiation(&num2);
   let duration3 = start3.elapsed();
   
 
 
   println!("i^i is {:#?}. \nTime Elapsed = {:?}", i_i1, duration1);
-  println!("i^i is {:#?}. \nTime Elapsed = {:?}", i_i3, duration3);
+  println!("i^i is {:#?}. \nTime Elapsed = {:?}", &num1, duration3);
 }
