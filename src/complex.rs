@@ -89,23 +89,23 @@ impl ComplexNumber {
   }
 
   pub fn exp(&mut self, index: &ComplexNumber) {
-    let imag = self.argument();
-    let real = self.modulus().log(E);
+    // let imag = self.argument();
+    // let real = self.modulus().log(E);
 
-    let ans_modulus = (index.real * real - imag * index.imag).exp();
-    let ans_argument = index.real * imag + real * index.imag;
+    // let ans_modulus = (index.real * real - imag * index.imag).exp();
+    // let ans_argument = index.real * imag + real * index.imag;
 
-    self.real = ans_modulus * ans_argument.cos();
-    self.imag = ans_modulus * ans_argument.sin();
+    // self.real = ans_modulus * ans_argument.cos();
+    // self.imag = ans_modulus * ans_argument.sin();
 
-    // self.log(E);
-    // self.multiply(index);
+    self.log(E);
+    self.multiply(index);
 
-    // let ans_mod = self.real.exp();
-    // let ans_argument = self.imag;
+    let ans_mod = self.real.exp();
+    let ans_argument = self.imag;
 
-    // self.real = ans_mod * ans_argument.cos();
-    // self.imag = ans_mod * ans_argument.sin();
+    self.real = ans_mod * ans_argument.cos();
+    self.imag = ans_mod * ans_argument.sin();
   }
 }
 
