@@ -1,2 +1,4 @@
 /target
 /.vscode
+/test.rs
+/mandelbrot.png

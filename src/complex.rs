@@ -87,6 +87,13 @@ impl ComplexNumber {
     self.real = modulus.log(base);
     self.imag = argument * E.log(base);
   }
+  pub fn squared(&mut self) {
+    let real = self.real.powi(2) - self.imag.powi(2);
+    let imag = 2.0 * self.real * self.imag;
+
+    self.real = real;
+    self.imag = imag;
+  }
 
   pub fn exp(&mut self, index: &ComplexNumber) {
     // let imag = self.argument();
