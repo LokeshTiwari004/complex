@@ -22,11 +22,11 @@ fn iterate(z: &mut ComplexNumber, c: &ComplexNumber) {
 }
 
 fn create(array: &mut Array3<u8>) {
-  let max_iterations = 100;
+  let max_iterations = 50;
 
-  for x in 0..1080 {
-    for y in 0..1920 {
-      let c = ComplexNumber::cartesian(3.0 * (((x as f64) - 540.0)/1080.0), 3.0 * ((960.0 - (y as f64))/1920.0));
+  for y in 0..1080 {
+    for x in 0..1920 {
+      let c = ComplexNumber::cartesian(1.5 * (((x as f64) - 960.0)/960.0) - 1.0, 1.5 * ((540.0 - (y as f64))/540.0));
       let mut z = ComplexNumber::cartesian(0.0, 0.0);
 
       let mut num_of_iter = max_iterations;
@@ -39,9 +39,9 @@ fn create(array: &mut Array3<u8>) {
 
       let factor = ((num_of_iter as f64) / (max_iterations as f64)).powf(0.5);
       let color = 255 - (factor * 255.0) as u8;
-      array[[x, y, 0]] = color;
-      array[[x, y, 1]] = color;
-      array[[x, y, 2]] = color;
+      array[[y, x, 0]] = color;
+      array[[y, x, 1]] = color;
+      array[[y, x, 2]] = color;
     }
   }
 }
