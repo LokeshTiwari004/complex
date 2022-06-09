@@ -19,7 +19,6 @@ fn main() {
   }
   let duration = start.elapsed();
   println!("Time taken to generate image sequence is {:?}", &duration);
-  // create_frames(0.5, "001");
 }
 
 fn iterate(z: &mut ComplexNumber, c: &ComplexNumber) {
