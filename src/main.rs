@@ -7,18 +7,19 @@ use complex::complex::ComplexNumber;
 use image::RgbImage;
 
 fn main() {
-  let start = Instant::now();
-  for i in 1..10 {
-    create_frames(0.01 * i as f64, format!("00{}", i).as_str());
-  }
-  for i in 10..100 {
-    create_frames(0.01 * i as f64, format!("0{}", i).as_str());
-  }
-  for i in 100..201 {
-    create_frames(0.01 * i as f64, format!("{}", i).as_str());
-  }
-  let duration = start.elapsed();
-  println!("Time taken to generate image sequence is {:?}", &duration);
+  // let start = Instant::now();
+  // for i in 1..10 {
+  //   create_frames(0.01 * i as f64, format!("00{}", i).as_str());
+  // }
+  // for i in 10..100 {
+  //   create_frames(0.01 * i as f64, format!("0{}", i).as_str());
+  // }
+  // for i in 100..201 {
+  //   create_frames(0.01 * i as f64, format!("{}", i).as_str());
+  // }
+  // let duration = start.elapsed();
+  // println!("Time taken to generate image sequence is {:?}", &duration);
+  create_frames(0.5, "001");
 }
 
 fn iterate(z: &mut ComplexNumber, c: &ComplexNumber) {
@@ -32,7 +33,8 @@ fn create_julia_set(array: &mut Array3<u8>, factor: f64) {
   for y in 0..800 {
     for x in 0..800 {
       let mut z = ComplexNumber::cartesian(1.65 * (((x as f64) - 400.0)/400.0) , 1.65 * ((400.0 - (y as f64))/400.0));
-      let c = ComplexNumber::polar(0.7885, PI * factor);
+      // let c = ComplexNumber::polar(0.7885, PI * factor);
+      let c = ComplexNumber::polar(0.79, PI * factor);
 
       let mut num_of_iter = max_iterations;
       for i in 0..max_iterations {
@@ -93,5 +95,5 @@ fn create_frames(factor: f64, number: &str) {
   let mut array = Array3::<u8>::zeros((800, 800, 3));
 
   create_julia_set(&mut array, factor);
-  array_to_image(array).save(format!("../img_seq/julia_set.{}.png", number)).expect("opps!");
+  array_to_image(array).save(format!("../img_seq1/julia_set.{}.png", number)).expect("opps!");
 }
