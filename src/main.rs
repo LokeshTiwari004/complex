@@ -1,18 +1,24 @@
 extern crate ndarray;
 
+use std::time::Instant;
 use ndarray::Array3;
-use std::{time::Instant, f64::consts::PI};
+use std::f64::consts::PI;
 use complex::complex::ComplexNumber;
 use image::RgbImage;
 
 fn main() {
-  let mut array = Array3::<u8>::zeros((800, 800, 3));
-
   let start = Instant::now();
-  create_julia_set(&mut array, 0.95);
-  array_to_image(array).save("julia_set.png").expect("opps!");
+  for i in 1..10 {
+    create_frames(0.01 * i as f64, format!("00{}", i).as_str());
+  }
+  for i in 10..100 {
+    create_frames(0.01 * i as f64, format!("0{}", i).as_str());
+  }
+  for i in 100..201 {
+    create_frames(0.01 * i as f64, format!("{}", i).as_str());
+  }
   let duration = start.elapsed();
-  println!("Time taken to create julia set is {:?}", &duration);
+  println!("Time taken to generate image sequence is {:?}", &duration);
 }
 
 fn iterate(z: &mut ComplexNumber, c: &ComplexNumber) {
@@ -81,4 +87,11 @@ fn array_to_image(arr: Array3<u8>) -> RgbImage {
 
     RgbImage::from_raw(width as u32, height as u32, raw)
         .expect("container should have the right size for the image dimensions")
+}
+
+fn create_frames(factor: f64, number: &str) {
+  let mut array = Array3::<u8>::zeros((800, 800, 3));
+
+  create_julia_set(&mut array, factor);
+  array_to_image(array).save(format!("../img_seq/julia_set.{}.png", number)).expect("opps!");
 }
