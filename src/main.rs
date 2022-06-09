@@ -1,19 +1,18 @@
 extern crate ndarray;
 
 use ndarray::Array3;
-use std::time::Instant;
+use std::{time::Instant, f64::consts::PI};
 use complex::complex::ComplexNumber;
 use image::RgbImage;
 
 fn main() {
-  let mut array = Array3::<u8>::zeros((1080, 1920, 3));
-  // let mut image = [[[0_u8; 3];1920]; 1080];
+  let mut array = Array3::<u8>::zeros((800, 800, 3));
 
   let start = Instant::now();
-  create(&mut array);
-  array_to_image(array).save("mandelbrot.png").expect("opps!");
+  create_julia_set(&mut array, 0.95);
+  array_to_image(array).save("julia_set.png").expect("opps!");
   let duration = start.elapsed();
-  println!("Time taken to create mandelbrot is {:?}", &duration);
+  println!("Time taken to create julia set is {:?}", &duration);
 }
 
 fn iterate(z: &mut ComplexNumber, c: &ComplexNumber) {
@@ -21,31 +20,58 @@ fn iterate(z: &mut ComplexNumber, c: &ComplexNumber) {
   z.add(c);
 }
 
-fn create(array: &mut Array3<u8>) {
-  let max_iterations = 50;
+fn create_julia_set(array: &mut Array3<u8>, factor: f64) {
+  let max_iterations = (100.0 * factor.powf(0.25)) as i32;
 
-  for y in 0..1080 {
-    for x in 0..1920 {
-      let c = ComplexNumber::cartesian(1.5 * (((x as f64) - 960.0)/960.0) - 1.0, 1.5 * ((540.0 - (y as f64))/540.0));
-      let mut z = ComplexNumber::cartesian(0.0, 0.0);
+  for y in 0..800 {
+    for x in 0..800 {
+      let mut z = ComplexNumber::cartesian(1.65 * (((x as f64) - 400.0)/400.0) , 1.65 * ((400.0 - (y as f64))/400.0));
+      let c = ComplexNumber::polar(0.7885, PI * factor);
 
       let mut num_of_iter = max_iterations;
       for i in 0..max_iterations {
         iterate(&mut z, &c);
-        if z.modulus() > 20.0 {
-          num_of_iter = i ;
+        if z.modulus() > 80.0 {
+          num_of_iter = i;
         }
       };
 
-      let factor = ((num_of_iter as f64) / (max_iterations as f64)).powf(0.5);
-      let color = 255 - (factor * 255.0) as u8;
-      array[[y, x, 0]] = color;
-      array[[y, x, 1]] = color;
-      array[[y, x, 2]] = color;
+      if num_of_iter < 11 {
+        array[[y, x, 0]] = 17;
+        array[[y, x, 1]] = 45;
+        array[[y, x, 2]] = 77;
+      } else if num_of_iter < 21 {
+        num_of_iter -= 10;
+        let factor = (num_of_iter as f64) / 10.0;
+        array[[y, x, 0]] = 19 + (factor * 17.0) as u8;
+        array[[y, x, 1]] = 70 + (factor * 70.0) as u8;
+        array[[y, x, 2]] = 94 + (factor * 95.0) as u8;
+      } else if num_of_iter < 51 {
+        num_of_iter -= 20;
+        let factor = (num_of_iter as f64) / 30.0;
+        array[[y, x, 0]] = 41 + (factor * 201.0) as u8;
+        array[[y, x, 1]] = 31 + (factor * 151.0) as u8;
+        array[[y, x, 2]] = 7 + (factor * 29.0) as u8;
+      } else if num_of_iter < 71 {
+        num_of_iter -= 50;
+        let factor = (num_of_iter as f64) / 20.0;
+        array[[y, x, 0]] = 110 + (factor * 102.0) as u8;
+        array[[y, x, 1]] = 26 + (factor * 23.0) as u8;
+        array[[y, x, 2]] = 16 + (factor * 14.0) as u8;
+      } else if num_of_iter < 81 {
+        num_of_iter -= 70;
+        let factor = (num_of_iter as f64) / 10.0;
+        array[[y, x, 0]] = 103 + (factor * 60.0) as u8;
+        array[[y, x, 1]] = 138 + (factor * 81.0) as u8;
+        array[[y, x, 2]] = 22 + (factor * 11.0) as u8;
+      } else {
+        array[[y, x, 0]] = 0;
+        array[[y, x, 1]] = 0;
+        array[[y, x, 2]] = 0;
+      }
     }
   }
 }
-
 
 fn array_to_image(arr: Array3<u8>) -> RgbImage {
     assert!(arr.is_standard_layout());
